@@ -9,17 +9,37 @@ import Chat from "./components/Chat";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
 //Create the navigator
 const Stack = createNativeStackNavigator();
 
 // The app’s main Chat component that renders the chat UI
 const App = () => {
+  const firebaseConfig = {
+    apiKey: "AIzaSyAVG0FxRRJX5Pbz33c0CS7zmgldGt4Trh8",
+    authDomain: "chat-app-a36ed.firebaseapp.com",
+    projectId: "chat-app-a36ed",
+    storageBucket: "chat-app-a36ed.appspot.com",
+    messagingSenderId: "583180126616",
+    appId: "1:583180126616:web:b5d49a53c3c155a39e03ed",
+  };
+
+  //initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  //initialize Cloud Firestore and get a reference to the service
+  const db = getFirestore(app);
+
   return (
     <NavigationContainer>
       {/* Code to rendered */}
       <Stack.Navigator initialRouteName="Start">
         <Stack.Screen name="Start" component={Start} />
-        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="Chat">
+          {(props) => <Chat db={db} {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
