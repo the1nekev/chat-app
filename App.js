@@ -15,6 +15,7 @@ import {
   disableNetwork,
   enableNetwork,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { Alert, LogBox } from "react-native";
 import { useEffect } from "react";
@@ -41,6 +42,9 @@ const App = () => {
   //initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
 
+  //Initialize location reference
+  const storage = getStorage(app);
+
   //real-time network connectivity detection system
   useEffect(() => {
     if (connectionStatus.isConnected === false) {
@@ -61,6 +65,7 @@ const App = () => {
             <Chat
               isConnected={connectionStatus.isConnected}
               db={db}
+              storage={storage}
               {...props}
             />
           )}
